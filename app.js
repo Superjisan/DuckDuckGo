@@ -29,9 +29,23 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+function ddgJSONRequest(string){
+  if (typeof string !== "string"){
+    console.log("Please put a string as an argument")
+  } else{
+    var query = string.split(' ').join('+')
+    console.log("query: ", query);
+    var result = "http://api.duckduckgo.com/?q="+ query +"&format=json&pretty=1";
+    console.log("json result: ", result)
+    return result
+  }
+}
+
+ddgJSONRequest("George Washington")
+
 //ddg query
-ddg.query("duckduckgo", function(err, data){
-    console.log(data) // logs a dictionary with all return fields
+ddg.query("Google", function(err, data){
+    console.log("Result of ddg query: ", data) // logs a dictionary with all return fields
 });
 
 app.get('/', routes.index);
