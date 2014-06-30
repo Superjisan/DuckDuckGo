@@ -8,14 +8,20 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
-var ddg = require('ddg')
+var ddg = require('ddg');
+var swig = require('swig');
 
 var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+
+// Swig Setup
+app.engine('html', swig.renderFile);
+app.set('view engine', 'html');
+swig.setDefaults({ cache: false });
+
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());

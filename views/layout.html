@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title> {% block title%} {{title}} {%endblock%} </title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel = 'stylesheet' href = '../bower_components/bootstrap/dist/css/bootstrap.css'>
+
+</head>
+
+<body>
+  {%block content%} {%endblock%}
+</body>
+
+<script src='../bower_components/jquery/dist/jquery.js'> </script>
+{% block bottomscript %} {% endblock%}
+</html>
