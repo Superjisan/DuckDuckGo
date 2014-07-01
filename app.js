@@ -47,16 +47,31 @@ function ddgJSONRequest(string){
   }
 }
 
-ddgJSONRequest("George Washington")
+var url = ddgJSONRequest("George Washington");
+
+http.get(url, function(res){
+  var body = '';
+
+  res.on('data', function(chunk){
+    body += chunk;
+  });
+
+  res.on('end', function(){
+    var duckduckgoResponse = JSON.parse(body)
+    console.log("Got response:", duckduckgoResponse);
+  })
+}).on('error', function(err){
+  console.log("GOT Error:", err)
+})
 
 //ddg query
-ddg.query("Google", function(err, data){
-    console.log("Result of ddg query: ", data) // logs a dictionary with all return fields
-});
+// ddg.query("Google", function(err, data){
+//     console.log("Result of ddg query: ", data) // logs a dictionary with all return fields
+// });
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+// app.get('/', routes.index);
+// app.get('/users', user.list);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
+// http.createServer(app).listen(app.get('port'), function(){
+//   console.log('Express server listening on port ' + app.get('port'));
+// });
