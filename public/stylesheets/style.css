@@ -6,3 +6,15 @@ body {
 a {
   color: #00B7FF;
 }
+
+.searchQuery{
+
+}
+
+#searchQuery {
+  margin-top:  10px;
+}
+
+.queryResult {
+  border: 1px solid green;
+}

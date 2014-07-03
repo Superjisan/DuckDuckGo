@@ -69,8 +69,12 @@ http.get(url, function(res){
 //     console.log("Result of ddg query: ", data) // logs a dictionary with all return fields
 // });
 
-// app.get('/', routes.index);
+app.get('/', routes.index);
 // app.get('/users', user.list);
+
+
+//set up bower access on the front-end
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
