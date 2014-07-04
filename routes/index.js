@@ -8,11 +8,14 @@ exports.index = function(req, res){
 };
 
 exports.search = function(req,res){
+  //post data
   var searchQuery = req.body.searchQuery;
+  //variables to be declared later
   var duckduckgoResponse;
-  var searchResult;
+
   console.log("searchQuery:", searchQuery);
 
+  //converts the string to be the proper URL for the get request
   function ddgJSONRequest(string){
       if (typeof string !== "string"){
         console.log("Please put a string as an argument")
@@ -24,24 +27,24 @@ exports.search = function(req,res){
         return result
       }
     }
-
     var searchInput = ddgJSONRequest(searchQuery);
     console.log("searchInput", searchInput)
 
-    var ddgResponse = http.get(searchInput, function(res){
+    //GET request for the ddg json
+    //param searchInput - or the URL to go to
+    //callback - after going there, using response as opposed to res, to not confuse express and http calls
+    http.get(searchInput, function(response){
       var body = '';
 
-      res.on('data', function(chunk){
+      response.on('data', function(chunk){
         body += chunk;
       });
 
-      res.on('end', function(){
+      response.on('end', function(){
         duckduckgoResponse = JSON.parse(body);
-        // console.log("Got response:", duckduckgoResponse);
-        // })
-        searchResult = duckduckgoResponse;
-        console.log("searchResult: ", searchResult);
-        //res.send(200, {searchResult: searchResult});
+        console.log("searchResult: ", duckduckgoResponse);
+
+        res.render('index', {searchResult: JSON.stringify(duckduckgoResponse)});
       }).on('error', function(err){
         console.log("GOT Error:", err)
       });
