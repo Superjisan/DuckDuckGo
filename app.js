@@ -70,7 +70,7 @@ http.get(url, function(res){
 // });
 
 app.get('/', routes.index);
-// app.get('/users', user.list);
+app.post('/search', routes.search);
 
 
 //set up bower access on the front-end
