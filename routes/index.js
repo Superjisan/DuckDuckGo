@@ -10,6 +10,7 @@ exports.index = function(req, res){
 exports.search = function(req,res){
   //post data
   var searchQuery = req.body.searchQuery;
+  console.log("req body", req.body);
   //variables to be declared later
   var duckduckgoResponse;
 

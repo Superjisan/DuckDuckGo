@@ -27,6 +27,7 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(express.bodyParser()); //to receive proper data via ajax
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -35,43 +36,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-function ddgJSONRequest(string){
-  if (typeof string !== "string"){
-    console.log("Please put a string as an argument")
-  } else{
-    var query = string.split(' ').join('+')
-    console.log("query: ", query);
-    var result = "http://api.duckduckgo.com/?q="+ query +"&format=json&pretty=1";
-    console.log("json result: ", result)
-    return result
-  }
-}
-
-var url = ddgJSONRequest("George Washington");
-
-http.get(url, function(res){
-  var body = '';
-
-  res.on('data', function(chunk){
-    body += chunk;
-  });
-
-  res.on('end', function(){
-    var duckduckgoResponse = JSON.parse(body)
-    console.log("Got response:", duckduckgoResponse);
-  })
-}).on('error', function(err){
-  console.log("GOT Error:", err)
-})
-
-//ddg query
-// ddg.query("Google", function(err, data){
-//     console.log("Result of ddg query: ", data) // logs a dictionary with all return fields
-// });
 
 app.get('/', routes.index);
 app.post('/search', routes.search);
-
 
 //set up bower access on the front-end
 app.use('/bower_components', express.static(__dirname + '/bower_components'));

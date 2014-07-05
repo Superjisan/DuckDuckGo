@@ -18,3 +18,10 @@ a {
 .queryResult {
   border: 1px solid green;
 }
+
+.queryResult p{
+  height: 400px;
+  padding: 10px 10px 10px 10px;
+  overflow: hidden;
+  overflow-y: scroll;
+}

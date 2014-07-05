@@ -22,49 +22,44 @@
           </div>
         </div>
         <div class="form-group">
-          <button type="submit" class="btn button submitbutton">Submit</button>
+          <button id="submit" class="btn button ">Submit</button>
         </div>
       </form>
     </div>
     <div class="col-md-6 column queryResult">
-      <p> {{searchResult}}
- <!--        Result: { DefinitionSource: '', <br>
-  Heading: 'George Washington', <br>
-  ImageWidth: 0, <br>
-  RelatedTopics: <br>
-   [ { Result: '<a href="https://duckduckgo.com/George_Washington">George Washington</a> The first President of the United States, the Commander-in-Chief of the Continental Army...', <br>
-       Icon: [Object],
-       FirstURL: 'https://duckduckgo.com/George_Washington', <br>
-       Text: 'George Washington The first President of the United States, the Commander-in-Chief of the Continental Army...' },<br>
-     { Result: '<a href="https://duckduckgo.com/George_Washington_Carver">George Washington Carver</a>An American scientist, botanist, educator, and inventor.', <br>
-       Icon: [Object],
-       FirstURL: 'https://duckduckgo.com/George_Washington_Carver', <br>
-       Text: 'George Washington CarverAn American scientist, botanist, educator, and inventor.' },
-     { Result: '<a href="https://duckduckgo.com/George_Washington_University">George Washington University</a>A private, coeducational research university located in the United States\' capital, Washington...', <br>
-       Icon: [Object],
-       FirstURL: 'https://duckduckgo.com/George_Washington_University', <br>
-       Text: 'George Washington UniversityA private, coeducational research university located in the United States\' capital, Washington...' }, <br>
-     { Topics: [Object], Name: 'People' },<br>
-     { Topics: [Object], Name: 'Bridges' },<br>
-     { Topics: [Object], Name: 'Other' },<br>
-     { Topics: [Object], Name: 'See also' } ], <br>
-  Type: 'D', <br>
-  Redirect: '', <br>
-  DefinitionURL: '', <br>
-  AbstractURL: 'https://en.wikipedia.org/wiki/George_Washington_(disambiguation)', <br>
-  Definition: '', <br>
-  AbstractSource: 'Wikipedia', <br>
-  Infobox: '', <br>
-  Image: '', <br>
-  ImageIsLogo: 0,
-  Abstract: '', <br>
-  AbstractText: '', <br>
-  AnswerType: '', <br>
-  ImageHeight: 0, <br>
-  Results: [], <br>
-  Answer: '' -->
+      <p>
+        {% if searchResult%}
+          {{searchResult}}
+        {%endif%}
       </p>
     </div>
   </div>
 </div>
+{% endblock %}
+<script>
+
+  $(function(){
+    $('#submit').click(function(e){
+        e.preventDefault();
+        console.log('submit clicked');
+
+    var data = {};
+    data.title = "title";
+    data.message = "message";
+
+    $.ajax({
+    type: 'POST',
+    data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: 'http://localhost:3000/search',
+        success: function(data) {
+            console.log('success');
+            console.log(JSON.stringify(data));
+            }
+        });
+      });
+    });
+</script>
+{% block bottomscript%}
+
 {% endblock %}
