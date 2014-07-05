@@ -27,17 +27,20 @@
       </form>
     </div>
     <div class="col-md-6 column queryResult">
-      <p>
+
         {% if searchResult%}
+        <pre id ="json">
           {{searchResult}}
+        </pre>
         {%endif%}
-      </p>
+
+
     </div>
   </div>
 </div>
 {% endblock %}
 <script>
-
+//ajax post
   $(function(){
     $('#submit').click(function(e){
         e.preventDefault();
@@ -59,6 +62,9 @@
         });
       });
     });
+
+
+  document.getElementById("json").innerHTML = JSON.stringify({{searchResult}}, undefined, 2);
 </script>
 {% block bottomscript%}
 

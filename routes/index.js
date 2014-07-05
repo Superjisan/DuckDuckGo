@@ -10,7 +10,7 @@ exports.index = function(req, res){
 exports.search = function(req,res){
   //post data
   var searchQuery = req.body.searchQuery;
-  console.log("req body", req.body);
+  console.log("req body", req.body)
   //variables to be declared later
   var duckduckgoResponse;
 
@@ -44,8 +44,10 @@ exports.search = function(req,res){
       response.on('end', function(){
         duckduckgoResponse = JSON.parse(body);
         console.log("searchResult: ", duckduckgoResponse);
+        var ddgResponseJsonString = JSON.stringify(duckduckgoResponse);
+        var ddgResponsePretty = JSON.stringify(JSON.parse(ddgResponseJsonString), null, 2)
 
-        res.render('index', {searchResult: JSON.stringify(duckduckgoResponse)});
+        res.render('index', {searchResult: ddgResponsePretty});
       }).on('error', function(err){
         console.log("GOT Error:", err)
       });

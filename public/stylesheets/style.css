@@ -19,7 +19,7 @@ a {
   border: 1px solid green;
 }
 
-.queryResult p{
+.queryResult pre{
   height: 400px;
   padding: 10px 10px 10px 10px;
   overflow: hidden;
