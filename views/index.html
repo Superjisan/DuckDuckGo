@@ -14,7 +14,7 @@
   </div>
   <div class="row clearfix">
     <div class="col-md-6 column">
-      <form class="form-horizontal" role="form" action="/search" method="post">
+      <form class="form-horizontal">
         <div class="form-group">
            <label for="searchQuery" class="col-sm-2 control-label searchQUery">Search Query</label>
           <div class="col-sm-10">
@@ -22,7 +22,8 @@
           </div>
         </div>
         <div class="form-group">
-          <button id="submit" class="btn button ">Submit</button>
+          <button id="submit" class="btn button ">SearchJSON</button>
+          <button id="scrape" class="btn button">SearchTopicSummaries</button>
         </div>
       </form>
     </div>
@@ -39,16 +40,24 @@
   </div>
 </div>
 {% endblock %}
+
+{% block bottomscript%}
 <script>
-//ajax post
+
+
+//ajax post for JSON request
   $(function(){
     $('#submit').click(function(e){
         e.preventDefault();
         console.log('submit clicked');
 
+    var searchQuery = $("#searchQuery").val();
+    console.log("searchQuery:", searchQuery);
+
     var data = {};
     data.title = "title";
     data.message = "message";
+    data.searchQuery = searchQuery;
 
     $.ajax({
     type: 'POST',
@@ -63,9 +72,11 @@
       });
     });
 
+  // var searchResult = {{searchResult | json }}
+  // console.log(searchResult);
 
-  document.getElementById("json").innerHTML = JSON.stringify({{searchResult}}, undefined, 2);
+  // document.getElementById("json").innerHTML = {{searchResult | json | safe}};
+
+
 </script>
-{% block bottomscript%}
-
 {% endblock %}

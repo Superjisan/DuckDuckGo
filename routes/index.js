@@ -1,12 +1,18 @@
 var http = require('http');
+var express = require('express');
+var request = require('request');
+var cheerio = require('cheerio')
+var app = express();
 /*
  * GET home page.
  */
-
 exports.index = function(req, res){
   res.render('index', { title: 'Express' });
 };
 
+/*
+ * POST JSON result
+ */
 exports.search = function(req,res){
   //post data
   var searchQuery = req.body.searchQuery;
@@ -54,4 +60,30 @@ exports.search = function(req,res){
     })
 
 
-}
+};
+
+
+/*
+* POST TOPIC SUMMARY SCRAPED result
+*/
+exports.scrape = function(req, res){
+
+  function ddgURL(string){
+      if (typeof string !== "string"){
+        console.log("Please put a string as an argument")
+      } else{
+        var query = string.split(' ').join('+')
+        console.log("query: ", query);
+        var result = "http://api.duckduckgo.com/?q="+ query;
+        console.log("url result: ", result)
+        return result
+      }
+    };
+
+  var searchQuery = req.body.searchQuery;
+  var urlToScrape = ddgJSONRequest(searchQuery);
+  console.log("URL TO SCRAPE:",  urlToScrape);
+
+  res.redirect('/')
+
+};
