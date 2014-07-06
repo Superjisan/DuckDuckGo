@@ -23,10 +23,11 @@ a {
 
 .queryResult {
   border: 1px solid green;
+  height: 400px;
 }
 
 .queryResult pre{
-  height: 400px;
+
   padding: 10px 10px 10px 10px;
   overflow: hidden;
   overflow-y: scroll;

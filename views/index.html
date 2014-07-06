@@ -28,14 +28,8 @@
       </form>
     </div>
     <div class="col-md-6 column queryResult">
-
-        {% if searchResult%}
         <pre id ="json">
-          {{searchResult}}
         </pre>
-        {%endif%}
-
-
     </div>
   </div>
 </div>
@@ -48,25 +42,31 @@
 //ajax post for JSON request
   $(function(){
     $('#submit').click(function(e){
-        e.preventDefault();
-        console.log('submit clicked');
+      e.preventDefault();
+      console.log('submit clicked');
 
-    var searchQuery = $("#searchQuery").val();
-    console.log("searchQuery:", searchQuery);
+      var searchQuery = $("#searchQuery").val();
+      console.log("searchQuery:", searchQuery);
 
-    var data = {};
-    data.title = "title";
-    data.message = "message";
-    data.searchQuery = searchQuery;
+      var data = {};
+      data.title = "title";
+      data.message = "message";
+      if(searchQuery){
+        data.searchQuery = searchQuery;
+      } else {
+        data.searchQuery  = '';
+      }
 
-    $.ajax({
-    type: 'POST',
-    data: JSON.stringify(data),
-        contentType: 'application/json',
-        url: 'http://localhost:3000/search',
-        success: function(data) {
-            console.log('success');
-            console.log(JSON.stringify(data));
+      $.ajax({
+      type: 'POST',
+      data: JSON.stringify(data),
+          contentType: 'application/json',
+          url: 'http://localhost:3000/search',
+          success: function(data) {
+              console.log('success');
+              console.log(JSON.stringify(data));
+              var queryResult = JSON.stringify(data);
+              document.getElementById("json").innerHTML = queryResult;
             }
         });
       });
