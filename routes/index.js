@@ -14,38 +14,21 @@ exports.index = function(req, res){
  * POST JSON result
  */
 exports.search = function(req,res){
-  //post data
+  //post data/ajax data
   var searchQuery = req.body.searchQuery;
   console.log("req body", req.body)
-  //variables to be declared later
-  var duckduckgoResponse;
 
   console.log("searchQuery:", searchQuery);
 
-  //converts the string to be the proper URL for the get request
-  function ddgJSONRequest(string){
-      if (typeof string !== "string"){
-        console.log("Please put a string as an argument")
-      } else{
-        var query = string.split(' ').join('+')
-        console.log("query: ", query);
-        if(query == ''){
-          console.log("query is empty")
-        } else {
-          var result = "http://api.duckduckgo.com/?q="+ query +"&format=json&pretty=1";
-          console.log("json result: ", result)
-          return result
-        }
-
-      }
-    }
     var searchInput = ddgJSONRequest(searchQuery);
     console.log("searchInput", searchInput)
 
-    //GET request for the ddg json
-    //param searchInput - or the URL to go to
-    //callback - after going there, using response as opposed to res, to not confuse express and http calls
-    if (searchInput){
+    /**
+    * GET request for the ddg json
+    * argument1 searchInput- the URL to go to
+    * argument2 callback - after going there, using response as opposed to res, to not confuse express and http calls
+    **/
+    if (searchInput){ //to check if searchInput exists
       http.get(searchInput, function(response){
         var body = '';
 
@@ -54,18 +37,18 @@ exports.search = function(req,res){
         });
 
         response.on('end', function(){
-          duckduckgoResponse = JSON.parse(body);
+          var duckduckgoResponse = JSON.parse(body); //the link is json formatted, so we need to parse it
           console.log("searchResult: ", duckduckgoResponse);
           var ddgResponseJsonString = JSON.stringify(duckduckgoResponse);
           var ddgResponsePretty = JSON.stringify(JSON.parse(ddgResponseJsonString), null, 2)
 
-          res.json(200, {searchResult: ddgResponsePretty});
+          res.json(200, {searchResult: ddgResponseJsonString});
         }).on('error', function(err){
           console.log("GOT Error:", err)
         });
       })
     } else {
-      console.log("searchInput is empty")
+      console.log("searchInput is empty"); //error exception
     }
 
 };
@@ -76,22 +59,65 @@ exports.search = function(req,res){
 */
 exports.scrape = function(req, res){
 
-  function ddgURL(string){
+  var searchQuery = req.body.searchQuery;
+  console.log("scrape searchQuery:", searchQuery);
+  var urlToScrape = ddgURL(searchQuery);
+  console.log("URL TO SCRAPE:",  urlToScrape);
+
+
+  var pageHTML = request({url: urlToScrape}, function(err,response,body){
+
+    console.log("Scraping URL:", urlToScrape);
+
+   //Just a basic error check
+    if(err && response.statusCode !== 200){
+      console.log('Request error:', err);
+    }
+
+    var $ = cheerio.load(body)
+
+    // console.log("body:", body);
+
+    var result_titles = $(".large").text();
+    var result_title_array = result_titles.split("...")
+    console.log("result titles:", result_title_array);
+    var result_snippets = $(".snippet").text();
+    var result_snippet_array = result_snippets.split("...")
+    console.log("result snippets:", result_snippet_array);
+  })
+  // res.redirect('/')
+
+}
+
+
+
+//converts the string to be the proper URL for the get request
+function ddgJSONRequest(string){
+    if (typeof string !== "string"){
+      console.log("Please put a string as an argument")
+    } else{
+      var query = string.split(' ').join('+')
+      console.log("query: ", query);
+
+      //error message if query is empty
+      if(query == ''){
+        console.log("query is empty")
+      } else {
+        var result = "http://api.duckduckgo.com/?q="+ query +"&format=json&pretty=1";
+        console.log("json result: ", result)
+        return result
+      }
+    }
+  }
+//convert the input into the ddg url to scrape
+function ddgURL(string){
       if (typeof string !== "string"){
         console.log("Please put a string as an argument")
       } else{
         var query = string.split(' ').join('+')
         console.log("query: ", query);
-        var result = "http://api.duckduckgo.com/?q="+ query;
+        var result = "http://duckduckgo.com/html/?q="+ query;
         console.log("url result: ", result)
         return result
       }
     };
-
-  var searchQuery = req.body.searchQuery;
-  var urlToScrape = ddgJSONRequest(searchQuery);
-  console.log("URL TO SCRAPE:",  urlToScrape);
-
-  res.redirect('/')
-
-};

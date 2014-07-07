@@ -39,6 +39,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.post('/search', routes.search);
+app.post('/scrape', routes.scrape);
 
 //set up bower access on the front-end
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
