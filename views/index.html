@@ -28,8 +28,8 @@
       </form>
     </div>
     <div class="col-md-6 column queryResult">
-        <pre id ="json">
-        </pre>
+        <p id ="json">
+        </p>
     </div>
   </div>
 </div>
@@ -68,8 +68,11 @@
           //on success change #json innerhtml
           success: function(data) {
             console.log('success');
-            var queryResult = JSON.stringify(data);
-            document.getElementById("json").innerHTML = queryResult;
+            var queryResult = data.searchResult;
+            console.log("data: ",data)
+            var prettyData = JSON.parse(queryResult)
+            console.log("prettyData:", prettyData);
+            document.getElementById("json").innerHTML = JSON.stringify(prettyData.RelatedTopics, null, "\n");
             }
           });
         });
@@ -98,8 +101,9 @@
           //on success change #json innerhtml
           success: function(data) {
             console.log('success');
-            var queryResult = JSON.stringify(data);
-            document.getElementById("json").innerHTML = queryResult;
+            var queryResult = data;
+            console.log("data:", data);
+            document.getElementById("json").innerHTML = queryResult.scrapeResultTitles;
             }
           });
         });

@@ -26,8 +26,9 @@ a {
   height: 400px;
 }
 
-.queryResult pre{
+.queryResult p{
   padding: 10px 10px 10px 10px;
+  height: 390px;
   overflow: hidden;
   overflow-y: scroll;
 }

@@ -84,7 +84,7 @@ exports.scrape = function(req, res){
     var result_snippet_array = result_snippets.split("...");
     console.log("result snippets:", result_snippet_array);
 
-     res.json(200, {scrapeResulTitles : result_title_array, scrapeResultSnippets: result_snippet_array })
+     res.json(200, {scrapeResultTitles : result_title_array, scrapeResultSnippets: result_snippet_array })
   })
 
 
