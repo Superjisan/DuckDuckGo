@@ -76,16 +76,18 @@ exports.scrape = function(req, res){
 
     var $ = cheerio.load(body)
 
-    // console.log("body:", body);
-
+    //TODO: clean these data up
     var result_titles = $(".large").text();
-    var result_title_array = result_titles.split("...")
+    var result_title_array = result_titles.split("...");
     console.log("result titles:", result_title_array);
     var result_snippets = $(".snippet").text();
-    var result_snippet_array = result_snippets.split("...")
+    var result_snippet_array = result_snippets.split("...");
     console.log("result snippets:", result_snippet_array);
+
+     res.json(200, {scrapeResulTitles : result_title_array, scrapeResultSnippets: result_snippet_array })
   })
-  // res.redirect('/')
+
+
 
 }
 

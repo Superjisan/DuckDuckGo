@@ -14,7 +14,7 @@
   </div>
   <div class="row clearfix">
     <div class="col-md-6 column">
-      <form class="form-horizontal" action="/scrape" method="POST">
+      <form class="form-horizontal">
         <div class="form-group">
            <label for="searchQuery" class="col-sm-2 control-label searchQUery">Search Query</label>
           <div class="col-sm-10">
@@ -22,8 +22,8 @@
           </div>
         </div>
         <div class="form-group">
-          <button id="submit" class="btn button ">SearchJSON</button>
-          <button type="submit" id="scrape" class="btn button">SearchTopicSummaries</button>
+          <button id="submit" class="btn button ">JSON Result</button>
+          <button id="scrape" class="btn button">Scrape Result</button>
         </div>
       </form>
     </div>
@@ -39,38 +39,72 @@
 <script>
 
 
-//ajax post for JSON request
+
   $(function(){
+
+
+
+    //on submit click
     $('#submit').click(function(e){
-      e.preventDefault();
-      console.log('submit clicked');
+        e.preventDefault();
+        console.log('submit clicked');
+          //value to post
+          var searchQuery = $("#searchQuery").val();
+          //data to post to /search
+          var data = {};
+          data.title = "title";
+          data.message = "message";
+          if(searchQuery){
+            data.searchQuery = searchQuery;
+          } else {
+            data.searchQuery  = ''; }
 
-      var searchQuery = $("#searchQuery").val();
-      console.log("searchQuery:", searchQuery);
-
-      var data = {};
-      data.title = "title";
-      data.message = "message";
-      if(searchQuery){
-        data.searchQuery = searchQuery;
-      } else {
-        data.searchQuery  = '';
-      }
-
-      $.ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        url: 'http://localhost:3000/search',
-        success: function(data) {
-          console.log('success');
-          console.log(JSON.stringify(data));
-          var queryResult = JSON.stringify(data);
-          document.getElementById("json").innerHTML = queryResult;
-          }
+        //ajax request
+        $.ajax({
+          type: 'POST',
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          url: 'http://localhost:3000/search',
+          //on success change #json innerhtml
+          success: function(data) {
+            console.log('success');
+            var queryResult = JSON.stringify(data);
+            document.getElementById("json").innerHTML = queryResult;
+            }
+          });
         });
+
+      //on scrape click
+      $('#scrape').on('click', function(e){
+        e.preventDefault();
+        console.log("scrape button clicked");
+
+         var searchQuery = $("#searchQuery").val();
+          //data to post to /scrape
+          var data = {};
+          data.title = "title";
+          data.message = "message";
+          if(searchQuery){
+            data.searchQuery = searchQuery;
+          } else {
+            data.searchQuery  = ''; }
+
+        //ajax request
+        $.ajax({
+          type: 'POST',
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          url: 'http://localhost:3000/scrape',
+          //on success change #json innerhtml
+          success: function(data) {
+            console.log('success');
+            var queryResult = JSON.stringify(data);
+            document.getElementById("json").innerHTML = queryResult;
+            }
+          });
+        });
+
       });
-    });
 
 
 </script>
