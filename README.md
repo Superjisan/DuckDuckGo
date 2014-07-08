@@ -11,6 +11,8 @@ To clone the application, go to the directory through in Terminal and type
 ###To run the application
 -----
 To run the application, navigate to the directory where the git repo is cloned and type
+`npm install`
+And after all of the npm packages are installed you can type
 `$ node app`
 
 Then navigate to `localhost:3000` in your browser and you can see it work
