@@ -5,13 +5,13 @@ Description: A simple DuckDuckGo query interface
 
 ###To clone the app
 ------
-To clone the application, go to the directory through in Terminal and type 
+To clone the application, go to the directory through in Terminal and type: 
 `$ git clone git@github.com:Superjisan/DuckDuckGo.git `
 
 ###To run the application
 -----
 To run the application, navigate to the directory where the git repo is cloned and type
-`npm install`
+`npm install` .
 And after all of the npm packages are installed you can type
 `$ node app`
 
