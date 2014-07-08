@@ -82,15 +82,26 @@ exports.scrape = function(req, res){
     $resultTitles.each(function(i,elem){
       titleArray[i] = $(this).text()
     })
-    console.log("result titles:", titleArray);
+    console.log("result titles:", titleArray.length);
 
     var snippetArray = [];
     $(".snippet").each(function(i, elem){
       snippetArray[i] = $(this).text()
     })
-    console.log("result snippets:", snippetArray);
+    console.log("result snippets:", snippetArray.length);
 
-     res.json(200, {scrapeResultTitles : titleArray, scrapeResultSnippets: snippetArray });
+    var resultArray = []
+    for(var j = 0; j < titleArray.length; j++){
+      var result = {};
+      result.title = titleArray[j];
+      result.snippet = snippetArray[j];
+
+      resultArray.push(result);
+    }
+
+    var JSONresultArray = JSON.stringify(resultArray)
+    console.log("resultArray:", resultArray);
+    res.json(200, {resultArray: JSONresultArray});
   })
 
 
@@ -112,7 +123,7 @@ function ddgJSONRequest(string){
         console.log("query is empty")
       } else {
         var result = "http://api.duckduckgo.com/?q="+ query +"&format=json&pretty=1";
-        console.log("json result: ", result)
+
         return result
       }
     }
@@ -123,9 +134,7 @@ function ddgURL(string){
         console.log("Please put a string as an argument")
       } else{
         var query = string.split(' ').join('+')
-        console.log("query: ", query);
         var result = "http://duckduckgo.com/html/?q="+ query;
-        console.log("url result: ", result)
         return result
       }
     };

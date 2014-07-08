@@ -16,7 +16,7 @@
     <div class="col-md-6 column">
       <form class="form-horizontal">
         <div class="form-group">
-           <label for="searchQuery" class="col-sm-2 control-label searchQUery">Search Query</label>
+           <label for="searchQuery" class="col-sm-2 control-label searchQuery">Search Query</label>
           <div class="col-sm-10">
             <input type="text" class="form-control" id="searchQuery" name="searchQuery"/>
           </div>
@@ -29,6 +29,7 @@
     </div>
     <div class="col-md-6 column queryResult">
         <p id ="json">
+          <!-- <span id="searchResult"></span> -->
         </p>
     </div>
   </div>
@@ -45,7 +46,7 @@
 
 
     //on submit click
-    $('#submit').click(function(e){
+    $('#submit').on("click", function(e){
         e.preventDefault();
         console.log('submit clicked');
           //value to post
@@ -61,6 +62,7 @@
 
         //ajax request
         $.ajax({
+          context: $("#json"),
           type: 'POST',
           data: JSON.stringify(data),
           contentType: 'application/json',
@@ -69,10 +71,10 @@
           success: function(data) {
             console.log('success');
             var queryResult = data.searchResult;
-            console.log("data: ",data)
-            var prettyData = JSON.parse(queryResult)
-            console.log("prettyData:", prettyData);
-            document.getElementById("json").innerHTML = JSON.stringify(prettyData.RelatedTopics, null, "\n");
+            $("#json").remove()
+            $(".queryResult").append("<p id='json'></p>")
+            $("#json").append("<span> DuckDuckGo Search Results: <span>");
+            $("#json").jsontree(queryResult);
             }
           });
         });
@@ -80,6 +82,7 @@
       //on scrape click
       $('#scrape').on('click', function(e){
         e.preventDefault();
+
         console.log("scrape button clicked");
 
          var searchQuery = $("#searchQuery").val();
@@ -101,9 +104,11 @@
           //on success change #json innerhtml
           success: function(data) {
             console.log('success');
-            var queryResult = data;
-            console.log("data:", data);
-            document.getElementById("json").innerHTML = queryResult.scrapeResultTitles;
+            var queryResult = data.resultArray;
+            $("#json").remove()
+            $(".queryResult").append("<p id='json'></p>");
+            $("#json").append("<span> DuckDuckGo Scrape Results: <span>");
+            $("#json").jsontree(queryResult)
             }
           });
         });
