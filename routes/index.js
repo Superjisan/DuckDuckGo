@@ -16,12 +16,7 @@ exports.index = function(req, res){
 exports.search = function(req,res){
   //post data/ajax data
   var searchQuery = req.body.searchQuery;
-  console.log("req body", req.body)
-
-  console.log("searchQuery:", searchQuery);
-
-    var searchInput = ddgJSONRequest(searchQuery);
-    console.log("searchInput", searchInput)
+  var searchInput = ddgJSONRequest(searchQuery);
 
     /**
     * GET request for the ddg json
@@ -38,7 +33,6 @@ exports.search = function(req,res){
 
         response.on('end', function(){
           var duckduckgoResponse = JSON.parse(body); //the link is json formatted, so we need to parse it
-          console.log("searchResult: ", duckduckgoResponse);
           var ddgResponseJsonString = JSON.stringify(duckduckgoResponse);
           var ddgResponsePretty = JSON.stringify(JSON.parse(ddgResponseJsonString), null, 2)
 
@@ -60,11 +54,7 @@ exports.search = function(req,res){
 exports.scrape = function(req, res){
 
   var searchQuery = req.body.searchQuery;
-  console.log("scrape searchQuery:", searchQuery);
   var urlToScrape = ddgURL(searchQuery);
-  console.log("URL TO SCRAPE:",  urlToScrape);
-
-
   var pageHTML = request({url: urlToScrape}, function(err,response,body){
 
     console.log("Scraping URL:", urlToScrape);
@@ -82,13 +72,11 @@ exports.scrape = function(req, res){
     $resultTitles.each(function(i,elem){
       titleArray[i] = $(this).text()
     })
-    console.log("result titles:", titleArray.length);
 
     var snippetArray = [];
     $(".snippet").each(function(i, elem){
       snippetArray[i] = $(this).text()
     })
-    console.log("result snippets:", snippetArray.length);
 
     var resultArray = []
     for(var j = 0; j < titleArray.length; j++){
@@ -100,11 +88,8 @@ exports.scrape = function(req, res){
     }
 
     var JSONresultArray = JSON.stringify(resultArray)
-    console.log("resultArray:", resultArray);
     res.json(200, {resultArray: JSONresultArray});
   })
-
-
 
 }
 
@@ -116,11 +101,10 @@ function ddgJSONRequest(string){
       console.log("Please put a string as an argument")
     } else{
       var query = string.split(' ').join('+')
-      console.log("query: ", query);
-
       //error message if query is empty
       if(query == ''){
         console.log("query is empty")
+        return '';
       } else {
         var result = "http://api.duckduckgo.com/?q="+ query +"&format=json&pretty=1";
 
